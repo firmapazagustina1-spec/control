@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Retiros - Control</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+💸 Retiros
+</header>
+
+<div class="card">
+
+<h2>Cargar retiro</h2>
+
+<input type="number" id="monto" placeholder="Monto">
+
+<button onclick="agregarRetiro()">
+Guardar
+</button>
+
+<p id="mensaje"></p>
+
+</div>
+
+
+<script>
+
+function agregarRetiro(){
+
+let monto = Number(document.getElementById("monto").value);
+
+let datos = JSON.parse(localStorage.getItem("controlDatos")) || {
+depositos:0,
+netwin:0,
+retiros:0
+};
+
+
+datos.retiros += monto;
+
+
+localStorage.setItem(
+"controlDatos",
+JSON.stringify(datos)
+);
+
+
+document.getElementById("mensaje").innerHTML =
+"Retiro guardado: $" + monto;
+
+}
+
+</script>
+
+</body>
+
+</html>
