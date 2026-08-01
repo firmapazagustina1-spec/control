@@ -1,237 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CASINO CONTROL</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color: #121824; color: #ffffff; }
-    .yellow-accent { background-color: #eab308; color: #000000; }
-    .yellow-text { color: #eab308; }
-    .card-dark { background-color: #1a2232; border: 1px solid #2a3447; }
-    .table-header { background-color: #eab308; color: #000000; font-weight: 800; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#111827;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login{
+width:360px;
+background:#1f2937;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 30px rgba(0,0,0,.5);
+}
+
+.logo{
+text-align:center;
+font-size:32px;
+color:#00d084;
+font-weight:bold;
+margin-bottom:30px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+background:#374151;
+color:white;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#00d084;
+color:#fff;
+font-size:18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#00b96f;
+}
+
+#error{
+margin-top:15px;
+text-align:center;
+color:#ff5c5c;
+}
+</style>
+
 </head>
-<body class="min-h-screen font-sans antialiased">
 
-  <!-- PANTALLA DE LOGIN -->
-  <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
-    <div class="card-dark p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
-      <div class="w-16 h-16 yellow-accent rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-        <span class="text-3xl font-black">♠</span>
-      </div>
-      <h1 class="text-2xl font-black tracking-wide text-white mb-1">CASINO CONTROL</h1>
-      <p class="text-xs text-gray-400 mb-6 uppercase tracking-wider">Acceso restringido</p>
-      
-      <form onsubmit="login(event)" class="space-y-4">
-        <input type="password" id="passwordInput" placeholder="Clave de acceso" required
-          class="w-full px-4 py-3 bg-[#121824] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500 text-sm text-center">
-        
-        <button type="submit" class="w-full yellow-accent py-3 rounded-xl font-bold uppercase tracking-wider text-sm hover:opacity-90 transition shadow-md">
-          INGRESAR
-        </button>
-      </form>
-      <p id="errorMessage" class="text-red-400 text-xs mt-4 hidden">Contraseña incorrecta</p>
-    </div>
-  </div>
+<body>
 
-  <!-- PANEL PRINCIPAL -->
-  <div id="appSection" class="hidden min-h-screen p-4 md:p-6 max-w-7xl mx-auto">
-    
-    <!-- HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-800 pb-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 yellow-accent rounded-lg flex items-center justify-center font-bold text-xl">♠</div>
-        <div>
-          <h1 class="text-xl font-black tracking-wide text-white leading-none">CASINO CONTROL</h1>
-          <span class="text-xs text-gray-400">Registro de operaciones</span>
-        </div>
-      </div>
+<div class="login">
 
-      <div class="flex items-center gap-3 text-xs">
-        <button onclick="toggleResumen()" class="card-dark px-4 py-2 rounded-lg text-gray-300 hover:text-white border border-gray-700">
-          📊 <span id="btnResumenText">Ver resumen</span>
-        </button>
-        <button onclick="logout()" class="card-dark px-4 py-2 rounded-lg text-gray-400 hover:text-red-400 border border-gray-700">
-          🔒 Cerrar sesión
-        </button>
-      </div>
-    </div>
+<div class="logo">
+CONTROL
+</div>
 
-    <!-- PANEL DE RESUMEN GLOBAL -->
-    <div id="resumenPanel" class="hidden mb-6">
-      <div class="card-dark p-4 rounded-xl">
-        <h3 class="text-xs uppercase tracking-wider yellow-text font-bold mb-3">RESUMEN GLOBAL — TODAS LAS HOJAS</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
-            <span class="text-xs text-gray-400 block">TOTAL PAGOS</span>
-            <span id="resumenPagos" class="text-lg font-bold text-green-400">$0.00</span>
-          </div>
-          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
-            <span class="text-xs text-gray-400 block">TOTAL FICHAS</span>
-            <span id="resumenFichas" class="text-lg font-bold yellow-text">0</span>
-          </div>
-          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
-            <span class="text-xs text-gray-400 block">USUARIOS</span>
-            <span id="resumenUsuarios" class="text-lg font-bold text-blue-400">0</span>
-          </div>
-          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
-            <span class="text-xs text-gray-400 block">TOTAL RESPALDO</span>
-            <span id="resumenRespaldos" class="text-lg font-bold text-purple-400">$0.00</span>
-          </div>
-        </div>
-      </div>
-    </div>
+<input type="text" id="user" placeholder="Usuario">
 
-    <!-- PESTAÑAS -->
-    <div class="flex items-center gap-2 mb-4 text-xs font-semibold">
-      <button class="yellow-accent px-4 py-2 rounded-t-lg font-bold">🗂️ Hoja 1</button>
-      <button onclick="borrarTodo()" class="text-red-400 hover:text-red-300 px-3 py-2">🗑️ Borrar Datos</button>
-    </div>
+<input type="password" id="pass" placeholder="Contraseña">
 
-    <!-- FORMULARIO -->
-    <form onsubmit="addRecord(event)" class="card-dark p-4 rounded-xl mb-6 grid grid-cols-2 md:grid-cols-7 gap-3 text-xs">
-      <div>
-        <label class="block text-gray-400 mb-1">Fecha</label>
-        <input type="date" id="fecha" required class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <div>
-        <label class="block text-gray-400 mb-1">Nombre</label>
-        <input type="text" id="nombre" placeholder="Nombre" required class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <div>
-        <label class="block text-gray-400 mb-1">Pagos ($)</label>
-        <input type="number" id="pagos" placeholder="0.00" step="0.01" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <div>
-        <label class="block text-gray-400 mb-1">Fichas</label>
-        <input type="number" id="fichas" placeholder="0" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <div>
-        <label class="block text-gray-400 mb-1">Usuarios</label>
-        <input type="text" id="usuarios" placeholder="Usuario" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <div>
-        <label class="block text-gray-400 mb-1">Respaldo ($)</label>
-        <input type="number" id="respaldo" placeholder="0.00" step="0.01" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <div>
-        <label class="block text-gray-400 mb-1">Observaciones</label>
-        <input type="text" id="observaciones" placeholder="Notas" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
-      </div>
-      <button type="submit" class="col-span-2 md:col-span-7 yellow-accent font-bold py-2 rounded-lg uppercase tracking-wider text-xs hover:opacity-90">
-        + AGREGAR REGISTRO
-      </button>
-    </form>
+<button onclick="login()">
+Ingresar
+</button>
 
-    <!-- TABLA -->
-    <div class="card-dark rounded-xl overflow-hidden shadow-xl border border-gray-800">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs uppercase tracking-wider">
-          <thead>
-            <tr class="table-header text-center">
-              <th class="p-3">FECHA</th>
-              <th class="p-3">NOMBRE</th>
-              <th class="p-3">PAGOS</th>
-              <th class="p-3">FICHAS</th>
-              <th class="p-3">USUARIOS</th>
-              <th class="p-3">RESPALDO</th>
-              <th class="p-3">OBSERVACIONES</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody" class="divide-y divide-gray-800 text-center font-medium"></tbody>
-        </table>
-      </div>
-    </div>
+<div id="error"></div>
 
-  </div>
+</div>
 
-  <script>
-    const CLAVE_CORRECTA = "1234";
-    let registros = JSON.parse(localStorage.getItem("casino_registros")) || [];
+<script>
 
-    function login(e) {
-      e.preventDefault();
-      if (document.getElementById("passwordInput").value === CLAVE_CORRECTA) {
-        document.getElementById("loginSection").classList.add("hidden");
-        document.getElementById("appSection").classList.remove("hidden");
-        renderTable();
-      } else {
-        document.getElementById("errorMessage").classList.remove("hidden");
-      }
-    }
+function login(){
 
-    function logout() {
-      document.getElementById("loginSection").classList.remove("hidden");
-      document.getElementById("appSection").classList.add("hidden");
-      document.getElementById("passwordInput").value = "";
-    }
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
 
-    function toggleResumen() {
-      const panel = document.getElementById("resumenPanel");
-      const btnText = document.getElementById("btnResumenText");
-      panel.classList.toggle("hidden");
-      btnText.innerText = panel.classList.contains("hidden") ? "Ver resumen" : "Ocultar resumen";
-    }
+if(u=="admin" && p=="1234"){
 
-    function addRecord(e) {
-      e.preventDefault();
-      const nuevo = {
-        fecha: document.getElementById("fecha").value,
-        nombre: document.getElementById("nombre").value,
-        pagos: parseFloat(document.getElementById("pagos").value || 0),
-        fichas: parseInt(document.getElementById("fichas").value || 0),
-        usuarios: document.getElementById("usuarios").value || "-",
-        respaldo: parseFloat(document.getElementById("respaldo").value || 0),
-        observaciones: document.getElementById("observaciones").value || "-"
-      };
+window.location="dashboard.html";
 
-      registros.unshift(nuevo);
-      localStorage.setItem("casino_registros", JSON.stringify(registros));
-      renderTable();
-      e.target.reset();
-    }
+}else{
 
-    function renderTable() {
-      const tbody = document.getElementById("tableBody");
-      tbody.innerHTML = "";
+document.getElementById("error").innerHTML="Usuario o contraseña incorrectos";
 
-      let tPagos = 0, tFichas = 0, tUsuarios = 0, tRespaldo = 0;
+}
 
-      registros.forEach(r => {
-        tPagos += r.pagos;
-        tFichas += r.fichas;
-        if(r.usuarios !== "-") tUsuarios++;
-        tRespaldo += r.respaldo;
+}
 
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-[#20293a] transition";
-        tr.innerHTML = `
-          <td class="p-3 text-gray-300 whitespace-nowrap">${r.fecha}</td>
-          <td class="p-3 font-semibold text-white">${r.nombre}</td>
-          <td class="p-3 text-green-400 font-bold">$${r.pagos.toFixed(2)}</td>
-          <td class="p-3 yellow-text font-bold">${r.fichas}</td>
-          <td class="p-3 text-gray-300">${r.usuarios}</td>
-          <td class="p-3 text-purple-400 font-bold">$${r.respaldo.toFixed(2)}</td>
-          <td class="p-3 text-gray-400 normal-case">${r.observaciones}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+</script>
 
-      document.getElementById("resumenPagos").innerText = `$${tPagos.toFixed(2)}`;
-      document.getElementById("resumenFichas").innerText = tFichas;
-      document.getElementById("resumenUsuarios").innerText = tUsuarios;
-      document.getElementById("resumenRespaldos").innerText = `$${tRespaldo.toFixed(2)}`;
-    }
-
-    function borrarTodo() {
-      if(confirm("¿Seguro que quieres borrar todos los datos guardados en esta pantalla?")) {
-        registros = [];
-        localStorage.removeItem("casino_registros");
-        renderTable();
-      }
-    }
-  </script>
 </body>
 </html>
