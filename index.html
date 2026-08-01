@@ -1,75 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-<<link rel="stylesheet" href="css/style.css">>
+
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Control</title>
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
-
-body{
-background:#111827;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.login{
-width:360px;
-background:#1f2937;
-padding:30px;
-border-radius:15px;
-box-shadow:0 0 30px rgba(0,0,0,.5);
-}
-
-.logo{
-text-align:center;
-font-size:32px;
-color:#00d084;
-font-weight:bold;
-margin-bottom:30px;
-}
-
-input{
-width:100%;
-padding:14px;
-margin-bottom:15px;
-border:none;
-border-radius:10px;
-background:#374151;
-color:white;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:14px;
-background:#00d084;
-color:#fff;
-font-size:18px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
-}
-
-button:hover{
-background:#00b96f;
-}
-
-#error{
-margin-top:15px;
-text-align:center;
-color:#ff5c5c;
-}
-</style>
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -93,26 +31,30 @@ Ingresar
 
 </div>
 
+
 <script>
 
 function login(){
 
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
+let usuario = document.getElementById("user").value;
+let clave = document.getElementById("pass").value;
 
-if(u=="admin" && p=="1234"){
 
-window.location="dashboard.html";
+if(usuario == "admin" && clave == "1234"){
+
+window.location = "dashboard.html";
 
 }else{
 
-document.getElementById("error").innerHTML="Usuario o contraseña incorrectos";
+document.getElementById("error").innerHTML =
+"Usuario o contraseña incorrectos";
 
 }
 
 }
 
 </script>
+
 
 </body>
 </html>
