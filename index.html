@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+ font-family:Arial;
+ margin:20px;
+ background:#f2f2f2;
+}
+.card{
+ background:white;
+ padding:15px;
+ margin:10px 0;
+ border-radius:10px;
+}
+button{
+ padding:10px;
+ border:0;
+ border-radius:8px;
+ background:#222;
+ color:white;
+}
+input{
+ padding:10px;
+ width:90%;
+ margin:5px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Control</h1>
+
+<div class="card">
+<h2>Productos</h2>
+
+<input id="producto" placeholder="Nombre producto">
+<input id="precio" placeholder="Precio venta">
+
+<button onclick="agregar()">Agregar</button>
+
+<ul id="lista"></ul>
+
+</div>
+
+<div class="card">
+<h2>Resumen</h2>
+<p id="total">Productos: 0</p>
+</div>
+
+
+<script>
+let productos=[];
+
+function agregar(){
+
+let nombre=document.getElementById("producto").value;
+let precio=document.getElementById("precio").value;
+
+productos.push({
+nombre:nombre,
+precio:precio
+});
+
+mostrar();
+
+}
+
+function mostrar(){
+
+let lista=document.getElementById("lista");
+lista.innerHTML="";
+
+productos.forEach(p=>{
+let li=document.createElement("li");
+li.innerHTML=p.nombre+" - $"+p.precio;
+lista.appendChild(li);
+});
+
+document.getElementById("total").innerHTML=
+"Productos: "+productos.length;
+
+}
+
+</script>
+
+</body>
+</html>
