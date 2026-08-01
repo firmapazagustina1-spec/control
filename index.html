@@ -1,91 +1,261 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<title>Control</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{
- font-family:Arial;
- margin:20px;
- background:#f2f2f2;
-}
-.card{
- background:white;
- padding:15px;
- margin:10px 0;
- border-radius:10px;
-}
-button{
- padding:10px;
- border:0;
- border-radius:8px;
- background:#222;
- color:white;
-}
-input{
- padding:10px;
- width:90%;
- margin:5px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CASINO CONTROL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #121824;
+      color: #ffffff;
+    }
+    .yellow-accent {
+      background-color: #eab308;
+      color: #000000;
+    }
+    .yellow-text {
+      color: #eab308;
+    }
+    .card-dark {
+      background-color: #1a2232;
+      border: 1px solid #2a3447;
+    }
+    .table-header {
+      background-color: #eab308;
+      color: #000000;
+      font-weight: 800;
+    }
+  </style>
 </head>
+<body class="min-h-screen font-sans antialiased">
 
-<body>
+  <!-- PANTALLA DE LOGIN -->
+  <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
+    <div class="card-dark p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
+      <!-- Icono de Pica / Casino -->
+      <div class="w-16 h-16 yellow-accent rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+        <span class="text-3xl font-black">♠</span>
+      </div>
+      
+      <h1 class="text-2xl font-black tracking-wide text-white mb-1">CASINO CONTROL</h1>
+      <p class="text-xs text-gray-400 mb-6 uppercase tracking-wider">Acceso restringido</p>
+      
+      <form onsubmit="login(event)" class="space-y-4">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+            <i class="fa-solid font-bold">🔒</i>
+          </span>
+          <input type="password" id="passwordInput" placeholder="Clave de acceso" required
+            class="w-full pl-10 pr-4 py-3 bg-[#121824] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500 text-sm">
+        </div>
+        
+        <button type="submit" 
+          class="w-full yellow-accent py-3 rounded-xl font-bold uppercase tracking-wider text-sm hover:opacity-90 transition shadow-md">
+          INGRESAR
+        </button>
+      </form>
+      
+      <p id="errorMessage" class="text-red-400 text-xs mt-4 hidden">Contraseña incorrecta</p>
+    </div>
+  </div>
 
-<h1>Control</h1>
+  <!-- PANEL PRINCIPAL -->
+  <div id="appSection" class="hidden min-h-screen p-4 md:p-6 max-w-7xl mx-auto">
+    
+    <!-- HEADER SUPERIOR -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-800 pb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 yellow-accent rounded-lg flex items-center justify-center font-bold text-xl">
+          ♠
+        </div>
+        <div>
+          <h1 class="text-xl font-black tracking-wide text-white leading-none">CASINO CONTROL</h1>
+          <span class="text-xs text-gray-400">Registro de operaciones</span>
+        </div>
+      </div>
 
-<div class="card">
-<h2>Productos</h2>
+      <div class="flex items-center gap-3 text-xs">
+        <button onclick="toggleResumen()" class="card-dark px-4 py-2 rounded-lg text-gray-300 hover:text-white flex items-center gap-2 border border-gray-700">
+          📊 <span id="btnResumenText">Ver resumen</span>
+        </button>
+        <button onclick="logout()" class="card-dark px-4 py-2 rounded-lg text-gray-400 hover:text-red-400 flex items-center gap-2 border border-gray-700">
+          🔒 Cerrar sesión
+        </button>
+      </div>
+    </div>
 
-<input id="producto" placeholder="Nombre producto">
-<input id="precio" placeholder="Precio venta">
+    <!-- PANEL DE RESUMEN GLOBAL (OCULTO POR DEFECTO) -->
+    <div id="resumenPanel" class="hidden mb-6">
+      <div class="card-dark p-4 rounded-xl">
+        <h3 class="text-xs uppercase tracking-wider yellow-text font-bold mb-3">RESUMEN GLOBAL — TODAS LAS HOJAS</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
+            <span class="text-xs text-gray-400 block">TOTAL PAGOS</span>
+            <span id="resumenPagos" class="text-lg font-bold text-green-400">$0.00</span>
+          </div>
+          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
+            <span class="text-xs text-gray-400 block">TOTAL FICHAS</span>
+            <span id="resumenFichas" class="text-lg font-bold yellow-text">0</span>
+          </div>
+          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
+            <span class="text-xs text-gray-400 block">USUARIOS</span>
+            <span id="resumenUsuarios" class="text-lg font-bold text-blue-400">0</span>
+          </div>
+          <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
+            <span class="text-xs text-gray-400 block">RESPALDO</span>
+            <span id="resumenRespaldos" class="text-lg font-bold text-purple-400">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<button onclick="agregar()">Agregar</button>
+    <!-- PESTAÑAS / HOJAS -->
+    <div class="flex items-center gap-2 mb-4 overflow-x-auto text-xs font-semibold">
+      <button class="yellow-accent px-4 py-2 rounded-t-lg font-bold">
+        🗂️ Hoja 1
+      </button>
+      <button onclick="alert('Función de agregar hoja en desarrollo')" class="text-gray-400 hover:text-white px-3 py-2">
+        + Nueva hoja
+      </button>
+    </div>
 
-<ul id="lista"></ul>
+    <!-- FORMULARIO RÁPIDO PARA AGREGAR REGISTROS -->
+    <form onsubmit="addRecord(event)" class="card-dark p-4 rounded-xl mb-6 grid grid-cols-2 md:grid-cols-7 gap-3 text-xs">
+      <div>
+        <label class="block text-gray-400 mb-1">Fecha</label>
+        <input type="date" id="fecha" required class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <div>
+        <label class="block text-gray-400 mb-1">Nombre</label>
+        <input type="text" id="nombre" placeholder="Nombre" required class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <div>
+        <label class="block text-gray-400 mb-1">Pagos ($)</label>
+        <input type="number" id="pagos" placeholder="0.00" step="0.01" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <div>
+        <label class="block text-gray-400 mb-1">Fichas</label>
+        <input type="number" id="fichas" placeholder="0" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <div>
+        <label class="block text-gray-400 mb-1">Usuarios</label>
+        <input type="text" id="usuarios" placeholder="Usuario" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <div>
+        <label class="block text-gray-400 mb-1">Respaldo (URL)</label>
+        <input type="url" id="respaldo" placeholder="http://..." class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <div>
+        <label class="block text-gray-400 mb-1">Observaciones</label>
+        <input type="text" id="observaciones" placeholder="Notas" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+      </div>
+      <button type="submit" class="col-span-2 md:col-span-7 yellow-accent font-bold py-2 rounded-lg uppercase tracking-wider text-xs hover:opacity-90">
+        + Agregar Registro
+      </button>
+    </form>
 
-</div>
+    <!-- TABLA ESTILO CASINO CONTROL -->
+    <div class="card-dark rounded-xl overflow-hidden shadow-xl border border-gray-800">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs uppercase tracking-wider">
+          <thead>
+            <tr class="table-header text-center">
+              <th class="p-3">FECHA</th>
+              <th class="p-3">NOMBRE</th>
+              <th class="p-3">PAGOS</th>
+              <th class="p-3">FICHAS</th>
+              <th class="p-3">USUARIOS</th>
+              <th class="p-3">RESPALDO</th>
+              <th class="p-3">OBSERVACIONES</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-gray-800 text-center font-medium">
+            <!-- Las filas se agregan aquí dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-<div class="card">
-<h2>Resumen</h2>
-<p id="total">Productos: 0</p>
-</div>
+  </div>
 
+  <script>
+    // Cambia aquí la contraseña según tu preferencia:
+    const CLAVE_CORRECTA = "1234";
 
-<script>
-let productos=[];
+    let totalPagosSum = 0;
+    let totalFichasSum = 0;
+    let totalUsuariosCount = 0;
+    let totalRespaldosCount = 0;
 
-function agregar(){
+    function login(e) {
+      e.preventDefault();
+      const input = document.getElementById("passwordInput").value;
+      if (input === CLAVE_CORRECTA) {
+        document.getElementById("loginSection").classList.add("hidden");
+        document.getElementById("appSection").classList.remove("hidden");
+      } else {
+        document.getElementById("errorMessage").classList.remove("hidden");
+      }
+    }
 
-let nombre=document.getElementById("producto").value;
-let precio=document.getElementById("precio").value;
+    function logout() {
+      document.getElementById("loginSection").classList.remove("hidden");
+      document.getElementById("appSection").classList.add("hidden");
+      document.getElementById("passwordInput").value = "";
+    }
 
-productos.push({
-nombre:nombre,
-precio:precio
-});
+    function toggleResumen() {
+      const panel = document.getElementById("resumenPanel");
+      const btnText = document.getElementById("btnResumenText");
+      if (panel.classList.contains("hidden")) {
+        panel.classList.remove("hidden");
+        btnText.innerText = "Ocultar resumen";
+      } else {
+        panel.classList.add("hidden");
+        btnText.innerText = "Ver resumen";
+      }
+    }
 
-mostrar();
+    function addRecord(e) {
+      e.preventDefault();
+      const fecha = document.getElementById("fecha").value;
+      const nombre = document.getElementById("nombre").value;
+      const pagos = parseFloat(document.getElementById("pagos").value || 0);
+      const fichas = parseInt(document.getElementById("fichas").value || 0);
+      const usuarios = document.getElementById("usuarios").value || "-";
+      const respaldo = document.getElementById("respaldo").value;
+      const observaciones = document.getElementById("observaciones").value || "-";
 
-}
+      // Actualizar Totales
+      totalPagosSum += pagos;
+      totalFichasSum += fichas;
+      if (usuarios !== "-") totalUsuariosCount++;
+      if (respaldo) totalRespaldosCount++;
 
-function mostrar(){
+      document.getElementById("resumenPagos").innerText = `$${totalPagosSum.toFixed(2)}`;
+      document.getElementById("resumenFichas").innerText = totalFichasSum;
+      document.getElementById("resumenUsuarios").innerText = totalUsuariosCount;
+      document.getElementById("resumenRespaldos").innerText = totalRespaldosCount;
 
-let lista=document.getElementById("lista");
-lista.innerHTML="";
+      const respaldoHtml = respaldo ? `<a href="${respaldo}" target="_blank" class="yellow-text underline">Ver</a>` : "-";
 
-productos.forEach(p=>{
-let li=document.createElement("li");
-li.innerHTML=p.nombre+" - $"+p.precio;
-lista.appendChild(li);
-});
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-[#20293a] transition";
+      tr.innerHTML = `
+        <td class="p-3 text-gray-300 whitespace-nowrap">${fecha}</td>
+        <td class="p-3 font-semibold text-white">${nombre}</td>
+        <td class="p-3 text-green-400 font-bold">$${pagos.toFixed(2)}</td>
+        <td class="p-3 yellow-text font-bold">${fichas}</td>
+        <td class="p-3 text-gray-300">${usuarios}</td>
+        <td class="p-3">${respaldoHtml}</td>
+        <td class="p-3 text-gray-400 normal-case">${observaciones}</td>
+      `;
 
-document.getElementById("total").innerHTML=
-"Productos: "+productos.length;
-
-}
-
-</script>
-
+      document.getElementById("tableBody").prepend(tr);
+      e.target.reset();
+    }
+  </script>
 </body>
 </html>
