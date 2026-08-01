@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Control - Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#111827;
+color:white;
+}
+
+header{
+background:#1F2937;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:#1F2937;
+border-radius:15px;
+padding:20px;
+}
+
+.card h2{
+font-size:18px;
+margin-bottom:15px;
+}
+
+.numero{
+font-size:34px;
+font-weight:bold;
+color:#00D084;
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+padding:20px;
+}
+
+button{
+padding:15px;
+border:none;
+border-radius:12px;
+background:#00D084;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+🎰 CONTROL
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Depósitos</h2>
+<div class="numero">$0</div>
+</div>
+
+<div class="card">
+<h2>NetWin</h2>
+<div class="numero">$0</div>
+</div>
+
+<div class="card">
+<h2>Retiros</h2>
+<div class="numero">$0</div>
+</div>
+
+<div class="card">
+<h2>Saldo</h2>
+<div class="numero">$0</div>
+</div>
+
+</div>
+
+<div class="menu">
+
+<button>➕ Cargar Depósito</button>
+
+<button>🎰 Cargar NetWin</button>
+
+<button>💸 Registrar Retiro</button>
+
+<button>📊 Estadísticas</button>
+
+<button>👥 Usuarios</button>
+
+<button>📅 Historial</button>
+
+</div>
+
+</body>
+</html>
