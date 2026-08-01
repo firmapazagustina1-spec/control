@@ -34,7 +34,6 @@
   <!-- PANTALLA DE LOGIN -->
   <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
     <div class="card-dark p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
-      <!-- Icono de Pica / Casino -->
       <div class="w-16 h-16 yellow-accent rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
         <span class="text-3xl font-black">♠</span>
       </div>
@@ -45,7 +44,7 @@
       <form onsubmit="login(event)" class="space-y-4">
         <div class="relative">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <i class="fa-solid font-bold">🔒</i>
+            🔒
           </span>
           <input type="password" id="passwordInput" placeholder="Clave de acceso" required
             class="w-full pl-10 pr-4 py-3 bg-[#121824] border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500 text-sm">
@@ -86,7 +85,7 @@
       </div>
     </div>
 
-    <!-- PANEL DE RESUMEN GLOBAL (OCULTO POR DEFECTO) -->
+    <!-- PANEL DE RESUMEN GLOBAL -->
     <div id="resumenPanel" class="hidden mb-6">
       <div class="card-dark p-4 rounded-xl">
         <h3 class="text-xs uppercase tracking-wider yellow-text font-bold mb-3">RESUMEN GLOBAL — TODAS LAS HOJAS</h3>
@@ -104,8 +103,8 @@
             <span id="resumenUsuarios" class="text-lg font-bold text-blue-400">0</span>
           </div>
           <div class="bg-[#121824] p-3 rounded-lg border border-gray-800">
-            <span class="text-xs text-gray-400 block">RESPALDO</span>
-            <span id="resumenRespaldos" class="text-lg font-bold text-purple-400">0</span>
+            <span class="text-xs text-gray-400 block">TOTAL RESPALDO</span>
+            <span id="resumenRespaldos" class="text-lg font-bold text-purple-400">$0.00</span>
           </div>
         </div>
       </div>
@@ -144,8 +143,8 @@
         <input type="text" id="usuarios" placeholder="Usuario" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
       </div>
       <div>
-        <label class="block text-gray-400 mb-1">Respaldo (URL)</label>
-        <input type="url" id="respaldo" placeholder="http://..." class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
+        <label class="block text-gray-400 mb-1">Respaldo ($)</label>
+        <input type="number" id="respaldo" placeholder="0.00" step="0.01" class="w-full bg-[#121824] border border-gray-700 rounded-lg p-2 text-white">
       </div>
       <div>
         <label class="block text-gray-400 mb-1">Observaciones</label>
@@ -172,7 +171,7 @@
             </tr>
           </thead>
           <tbody id="tableBody" class="divide-y divide-gray-800 text-center font-medium">
-            <!-- Las filas se agregan aquí dinámicamente -->
+            <!-- Registros dinámicos -->
           </tbody>
         </table>
       </div>
@@ -181,13 +180,12 @@
   </div>
 
   <script>
-    // Cambia aquí la contraseña según tu preferencia:
     const CLAVE_CORRECTA = "1234";
 
     let totalPagosSum = 0;
     let totalFichasSum = 0;
     let totalUsuariosCount = 0;
-    let totalRespaldosCount = 0;
+    let totalRespaldoSum = 0;
 
     function login(e) {
       e.preventDefault();
@@ -225,21 +223,19 @@
       const pagos = parseFloat(document.getElementById("pagos").value || 0);
       const fichas = parseInt(document.getElementById("fichas").value || 0);
       const usuarios = document.getElementById("usuarios").value || "-";
-      const respaldo = document.getElementById("respaldo").value;
+      const respaldo = parseFloat(document.getElementById("respaldo").value || 0);
       const observaciones = document.getElementById("observaciones").value || "-";
 
       // Actualizar Totales
       totalPagosSum += pagos;
       totalFichasSum += fichas;
       if (usuarios !== "-") totalUsuariosCount++;
-      if (respaldo) totalRespaldosCount++;
+      totalRespaldoSum += respaldo;
 
       document.getElementById("resumenPagos").innerText = `$${totalPagosSum.toFixed(2)}`;
       document.getElementById("resumenFichas").innerText = totalFichasSum;
       document.getElementById("resumenUsuarios").innerText = totalUsuariosCount;
-      document.getElementById("resumenRespaldos").innerText = totalRespaldosCount;
-
-      const respaldoHtml = respaldo ? `<a href="${respaldo}" target="_blank" class="yellow-text underline">Ver</a>` : "-";
+      document.getElementById("resumenRespaldos").innerText = `$${totalRespaldoSum.toFixed(2)}`;
 
       const tr = document.createElement("tr");
       tr.className = "hover:bg-[#20293a] transition";
@@ -249,7 +245,7 @@
         <td class="p-3 text-green-400 font-bold">$${pagos.toFixed(2)}</td>
         <td class="p-3 yellow-text font-bold">${fichas}</td>
         <td class="p-3 text-gray-300">${usuarios}</td>
-        <td class="p-3">${respaldoHtml}</td>
+        <td class="p-3 text-purple-400 font-bold">$${respaldo.toFixed(2)}</td>
         <td class="p-3 text-gray-400 normal-case">${observaciones}</td>
       `;
 
