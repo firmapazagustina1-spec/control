@@ -1,60 +1,91 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Control</title>
-
-<link rel="stylesheet" href="css/style.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+ font-family:Arial;
+ margin:20px;
+ background:#f2f2f2;
+}
+.card{
+ background:white;
+ padding:15px;
+ margin:10px 0;
+ border-radius:10px;
+}
+button{
+ padding:10px;
+ border:0;
+ border-radius:8px;
+ background:#222;
+ color:white;
+}
+input{
+ padding:10px;
+ width:90%;
+ margin:5px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="login">
+<h1>Control</h1>
 
-<div class="logo">
-CONTROL
+<div class="card">
+<h2>Productos</h2>
+
+<input id="producto" placeholder="Nombre producto">
+<input id="precio" placeholder="Precio venta">
+
+<button onclick="agregar()">Agregar</button>
+
+<ul id="lista"></ul>
+
 </div>
 
-<input type="text" id="user" placeholder="Usuario">
-
-<input type="password" id="pass" placeholder="Contraseña">
-
-<button onclick="login()">
-Ingresar
-</button>
-
-<div id="error"></div>
-
+<div class="card">
+<h2>Resumen</h2>
+<p id="total">Productos: 0</p>
 </div>
 
 
 <script>
+let productos=[];
 
-function login(){
+function agregar(){
 
-let usuario = document.getElementById("user").value;
-let clave = document.getElementById("pass").value;
+let nombre=document.getElementById("producto").value;
+let precio=document.getElementById("precio").value;
 
+productos.push({
+nombre:nombre,
+precio:precio
+});
 
-if(usuario == "admin" && clave == "1234"){
-
-window.location = "dashboard.html";
-
-}else{
-
-document.getElementById("error").innerHTML =
-"Usuario o contraseña incorrectos";
+mostrar();
 
 }
+
+function mostrar(){
+
+let lista=document.getElementById("lista");
+lista.innerHTML="";
+
+productos.forEach(p=>{
+let li=document.createElement("li");
+li.innerHTML=p.nombre+" - $"+p.precio;
+lista.appendChild(li);
+});
+
+document.getElementById("total").innerHTML=
+"Productos: "+productos.length;
 
 }
 
 </script>
-
 
 </body>
 </html>
